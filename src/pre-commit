@@ -29,7 +29,7 @@ done
 if [ "$FILES" != "" ]; then
     error=false
     echo "\n\t >>> Running Code Sniffer. Code standard PSR2."
-    ./vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 -n -p $FILES
+    ./vendor/bin/phpcs --standard=PSR12 --encoding=utf-8 -n -p $FILES
     if [ "$?" -gt 0 ]
     then
         error=true
