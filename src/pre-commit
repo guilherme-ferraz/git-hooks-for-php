@@ -14,7 +14,7 @@ then
 fi
 SFILES=${SFILES:-$STAGED_FILES_CMD}
 
-echo "Checking PHP Lint..."
+echo "\n\t >>> Running PHP Lint..."
 for FILE in $SFILES
 do
     php -l -d display_errors=0 $PROJECT/$FILE
@@ -26,16 +26,38 @@ do
     FILES="$FILES $PROJECT/$FILE"
 done
 
+if [ "$FILES" != "" ]; then
+    error=false
+    echo "\n\t >>> Running Code Sniffer. Code standard PSR2."
+    ./vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 -n -p $FILES
+    if [ "$?" -gt 0 ]
+    then
+        error=true
+    fi
+    if [ "$error" != false ]; then 
+        echo "Fix the error before commit!"
+        echo "Para correção automática, execute: \n"
+        echo "  ./vendor/bin/phpcbf $FILES"
+        exit 1
+    fi
+fi
+
 if [ "$FILES" != "" ]
 then
-    echo "Running Code Sniffer. Code standard PSR2."
-    ./vendor/bin/phpcs --standard=PSR2 --encoding=utf-8 -n -p $FILES
-    if [ $? ne 0 ]
+    error=false
+    echo "\n\t >>> Running php-assumptions"
+    for i in $FILES; do 
+        ./vendor/bin/phpa $i
+        if [ "$?" -gt 0 ]
+        then
+            error=true
+        else
+            echo "OK: $i\n"
+        fi
+    done
+    if [ "$error" != false ]
     then
-        echo "Fix the error before commit!"
-        echo "Run"
-        echo "  ./vendor/bin/phpcbf $FILES"
-        echo "for automatic fix or fix it manually."
+        echo "\nCorrija os erros antes do Commit!"
         exit 1
     fi
 fi
