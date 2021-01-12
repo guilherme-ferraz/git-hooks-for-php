@@ -3,6 +3,20 @@
     "description": "Instalação e configuração automática de git hooks para análise estática de código PHP",
     "require": {
         "php": ">=7.2",
-        "another-vendor/package": "1.*"
+        "squizlabs/php_codesniffer": "3.*",
+        "rskuipers/php-assumptions": "^0.8.0"
+    },
+    "license": [
+        "GPL-3.0-or-later"
+    ],
+    "authors": [
+        {
+            "name": "Guilherme A. Ferraz",
+            "email": "guilhermeaugusto@rubeus.com.br",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "guilhermeaugusto@rubeus.com.br"
     }
 }
